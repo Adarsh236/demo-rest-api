@@ -1,0 +1,72 @@
+{
+  "name": "demo-rest-api",
+  "version": "1.0.0",
+  "description": "A demo application for building REST APIs using express, mongoose in ES6 and Jest.",
+  "author": "",
+  "main": "index.js",
+  "private": false,
+  "engines": {
+    "node": "14.18.0",
+    "npm": ">=6.4.1",
+    "yarn": ">=1.5.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Adarsh236/Pharmacy-Inventory-API-Dev"
+  },
+  "scripts": {
+    "start": "npm run serve",
+    "dev": "nodemon --exec babel-node src/index.js",
+    "build": "babel server --out-dir dist",
+    "serve": "NODE_ENV=production node dist/index.js",
+    "test": "jest --verbose --detectOpenHandles",
+    "test-watch": "jest --watchAll --verbose --detectOpenHandles"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "dependencies": {
+    "@babel/runtime": "7.15.4",
+    "@types/jest": "27.0.2",
+    "babel-plugin-add-module-exports": "1.0.4",
+    "body-parser": "1.19.0",
+    "compression": "1.7.4",
+    "dotenv": "10.0.0",
+    "express": "4.17.1",
+    "helmet": "4.6.0",
+    "joi": "17.4.2",
+    "mongoose": "6.0.10",
+    "node-persist": "^3.1.0",
+    "pine": "1.1.1",
+    "swagger-jsdoc": "6.1.0",
+    "swagger-ui-express": "4.1.6",
+    "uuid": "^8.3.2",
+    "validate.js": "0.13.1",
+    "winston": "3.3.3"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.15.7",
+    "@babel/core": "7.15.8",
+    "@babel/node": "7.15.8",
+    "@babel/plugin-proposal-class-properties": "7.14.5",
+    "@babel/plugin-transform-runtime": "7.15.8",
+    "@babel/preset-env": "7.15.8",
+    "@babel/preset-flow": "7.14.5",
+    "@babel/preset-react": "7.14.5",
+    "babel-plugin-dynamic-import-node": "2.3.3",
+    "cross-env": "7.0.3",
+    "eslint": "8.0.0",
+    "eslint-config-airbnb-base": "14.2.1",
+    "eslint-config-google": "0.14.0",
+    "eslint-plugin-import": "2.24.2",
+    "eslint-plugin-sonarjs": "0.10.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-jest": "25.0.1",
+    "eslint-plugin-prettier": "4.0.0",
+    "eslint-watch": "7.0.0",
+    "jest": "27.2.5",
+    "nodemon": "2.0.13",
+    "prettier": "2.4.1",
+    "superagent": "6.1.0",
+    "supertest": "6.1.6"
+  }
+}

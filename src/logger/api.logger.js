@@ -1,0 +1,19 @@
+import pine from 'pine';
+const logger = pine();
+
+const APILogger = {
+  info(message) {
+    logger.info(message);
+  },
+
+  info(message, data) {
+    logger.info(`${message}   ${undefined != data ? JSON.stringify(data) : ''}`);
+  },
+
+  error(message) {
+    logger.error(message);
+    throw new Error(message);
+  },
+};
+
+export default APILogger;

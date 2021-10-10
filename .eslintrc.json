@@ -1,0 +1,11 @@
+{
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["prettier", "jest"],
+  "rules": {
+    "no-console": "error",
+    "prettier/prettier": ["error"],
+    "no-return-await": "error",
+    "sonarjs/no-duplicate-string": "warn",
+    "sonarjs/no-identical-functions": "warn"
+  }
+}
