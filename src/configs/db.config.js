@@ -1,42 +1,28 @@
-import mongoose from 'mongoose';
+import storage from 'node-persist';
 import logger from '../logger/api.logger';
-import config from './config';
 
-const connect = () => {
-  // Use ES6 Promises for mongoose
-  mongoose.Promise = global.Promise;
+const DB = {
+  initialize() {
+    try {
+      storage.init({
+        dir: '../users',
+        stringify: JSON.stringify,
+        parse: JSON.parse,
+        encoding: 'utf8',
+        logging: false, // can also be custom logging function
+        ttl: false, // ttl* [NEW], can be true for 24h default or a number in MILLISECONDS or a valid Javascript Date object
+        expiredInterval: 2 * 60 * 1000, // every 2 minutes the process will clean-up the expired cache
 
-  const url = config.mongodb.host;
-  logger.info('MONGO_CONNECTION_STRING :::' + url);
-
-  mongoose.connect(url, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-
-  mongoose.connection.once('open', async () => {
-    logger.info('Connected to database');
-  });
-
-  mongoose.connection.on('error', (err) => {
-    logger.error('Error connecting to database  ', err);
-  });
-
-  return mongoose;
+        // in some cases, you (or some other service) might add non-valid storage files to your
+        // storage dir, i.e. Google Drive, make this true if you'd like to ignore these files and not throw an error
+        forgiveParseErrors: false,
+      });
+      logger.info('Connected to database');
+      return storage;
+    } catch (err) {
+      logger.error('Error connecting to database  ', err);
+    }
+  },
 };
 
-const disconnect = () => {
-  if (!mongoose.connection) {
-    return;
-  }
-
-  mongoose.disconnect();
-
-  mongoose.once('close', async () => {
-    console.log('Diconnected  to database');
-  });
-
-  return mongoose;
-};
-
-export default connect;
+export default DB;

@@ -1,7 +1,7 @@
 {
   "name": "demo-rest-api",
   "version": "1.0.0",
-  "description": "A demo application for building REST APIs using express, mongoose in ES6 and Jest.",
+  "description": "A demo application for building REST APIs using express, node persist in ES6 and Jest.",
   "author": "",
   "main": "index.js",
   "private": false,
@@ -22,7 +22,15 @@
     "test": "jest --verbose --detectOpenHandles",
     "test-watch": "jest --watchAll --verbose --detectOpenHandles"
   },
-  "keywords": [],
+  "keywords": [
+    "express",
+    "node",
+    "node.js",
+    "node persist",
+    "es6",
+    "REST",
+    "API"
+  ],
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "7.15.4",
@@ -34,7 +42,6 @@
     "express": "4.17.1",
     "helmet": "4.6.0",
     "joi": "17.4.2",
-    "mongoose": "6.0.10",
     "node-persist": "^3.1.0",
     "pine": "1.1.1",
     "swagger-jsdoc": "6.1.0",

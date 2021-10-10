@@ -1,35 +1,14 @@
-import User from './user.schema';
-import logger from '../../logger/api.logger';
-import storage from 'node-persist';
 import { v1 as uuidV1 } from 'uuid';
+import DB from '../../configs/db.config';
+import logger from '../../logger/api.logger';
 
-storage.init({
-  dir: '../users',
-
-  stringify: JSON.stringify,
-
-  parse: JSON.parse,
-
-  encoding: 'utf8',
-
-  logging: false, // can also be custom logging function
-
-  ttl: false, // ttl* [NEW], can be true for 24h default or a number in MILLISECONDS or a valid Javascript Date object
-
-  expiredInterval: 2 * 60 * 1000, // every 2 minutes the process will clean-up the expired cache
-
-  // in some cases, you (or some other service) might add non-valid storage files to your
-  // storage dir, i.e. Google Drive, make this true if you'd like to ignore these files and not throw an error
-  forgiveParseErrors: false,
-});
-
+const storage = DB.initialize();
 const USERS = 'users';
 
 const UserRepository = {
   async getUsers() {
     let data = [];
     try {
-      // data = await User.find({});
       data = await storage.getItem(USERS);
 
       if (typeof data === 'undefined') {
@@ -44,7 +23,6 @@ const UserRepository = {
   async getUser(prop, val) {
     let data = {};
     try {
-      // data = await User.find({ [prop]: val });
       const users = await this.getUsers();
       data = users.filter((user) => user.id === val);
       if (data.length < 1) {
@@ -59,7 +37,6 @@ const UserRepository = {
   async createUser(user) {
     let data = {};
     try {
-      // data = await User.create(user);
       user.id = uuidV1();
       user.createdAt = new Date();
       user.updatedAt = new Date();
@@ -77,7 +54,6 @@ const UserRepository = {
   async updateUser(prop, val, newUser) {
     let data = {};
     try {
-      // data = await User.replaceOne({ [prop]: val }, user);
       newUser.updatedAt = new Date();
       const oldUsers = await this.getUsers();
       const newUsers = oldUsers.map((user) => (user.id === val ? { ...user, ...newUser } : user));
@@ -92,7 +68,6 @@ const UserRepository = {
   async deleteUser(userId) {
     let data = {};
     try {
-      // data = await User.findByIdAndDelete(userId);
       const users = await this.getUsers();
       const result = users.filter((user) => user.id != userId);
       if (users.length === result.length) {
