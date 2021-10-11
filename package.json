@@ -17,8 +17,8 @@
   "scripts": {
     "start": "npm run serve",
     "dev": "nodemon --exec babel-node src/index.js",
-    "build": "babel server --out-dir dist",
-    "serve": "NODE_ENV=production node dist/index.js",
+    "build": "babel src --out-dir dist",
+    "serve": "node dist/index.js",
     "test": "jest --verbose --detectOpenHandles",
     "test-watch": "jest --watchAll --verbose --detectOpenHandles"
   },

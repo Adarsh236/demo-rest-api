@@ -5,7 +5,7 @@ import swaggerUi from 'swagger-ui-express';
 import helmet from 'helmet';
 import CustomResponse from '../helpers/custom-response';
 import is404 from '../middleware/is-404';
-import swaggerDocument from '../modules/user/user.doc.json';
+import swaggerDocument from '../modules/user/user.doc';
 import routes from './routes';
 
 const app = express();
@@ -24,7 +24,7 @@ app.use(helmet());
 // mount all routes on /api path
 app.use('/api', routes());
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument()));
 
 app.use(is404);
 

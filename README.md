@@ -1,6 +1,6 @@
 # demo-rest-api
 
-## keywords: ES6 - Babel - Node.js - Express - REST API - MongoDB - Mongoose - Jest - Docker
+## keywords: ES6 - Babel - Node.js - Express - REST API - Jest - Docker
 
 ### Installation
 
@@ -24,4 +24,11 @@ $ npm run start
 $ npm run test
 // or
 $ npm run test-watch
+```
+
+### For Docker
+
+```sh
+$ docker-compose build
+$ docker-compose up
 ```
