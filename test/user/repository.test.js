@@ -1,127 +1,85 @@
-import CustomResponse from '../../src/helpers/custom-response';
+import UserRepository from '../../src/modules/user/user.repository';
+import DB from '../../src/configs/db.config';
 
-describe('API-responses', () => {
-  test('CustomResponse success', (done) => {
-    const msg = 'It works.';
-    const { success, status, data } = CustomResponse.success({ msg });
-    expect(success).toBeTruthy();
-    expect(status).toBe(200);
-    expect(data).toHaveProperty('msg');
-    expect(data.msg).toEqual(msg);
-    done();
+describe('user repository', () => {
+  beforeEach(async () => {
+    await UserRepository.dropAll();
+    const howie = {
+      name: 'howie',
+      dob: '01/02/1995',
+      address: 'new york',
+      description: 'test',
+    };
+    const bill = {
+      name: 'bill',
+      dob: '01/02/1996',
+      address: 'new york',
+      description: 'test',
+    };
+    await UserRepository.createUser(howie);
+    await UserRepository.createUser(bill);
   });
 
-  test('CustomResponse error', (done) => {
-    const msg = "It doesn't work.";
-    const { success, status, data } = CustomResponse.error({ msg }, 404);
-    expect(success).toBeFalsy();
-    expect(status).toBe(404);
-    expect(data).toHaveProperty('msg');
-    expect(data.msg).toEqual(msg);
-    done();
+  test('lists users', async () => {
+    const input = await UserRepository.getUsers();
+    const actual = 2;
+    expect(input.length).toEqual(actual);
+  });
+
+  test('find single user by id', async () => {
+    const users = await UserRepository.getUsers();
+    const id = users[0].id;
+
+    const user = await UserRepository.getUser('id', id);
+    const input = user[0].id;
+    const actual = id;
+    expect(input).toEqual(actual);
+  });
+
+  test('inserts a user', async () => {
+    const bill = {
+      name: 'bill',
+      dob: '01/02/1996',
+      address: 'new york',
+      description: 'test',
+    };
+    const newUser = await UserRepository.createUser(bill);
+    const { id, createdAt, updatedAt, ...input } = newUser;
+    const actual = {
+      name: 'bill',
+      dob: '01/02/1996',
+      address: 'new york',
+      description: 'test',
+    };
+    expect(input).toEqual(expect.objectContaining(actual));
+  });
+
+  test('deletes a user', async () => {
+    const users = await UserRepository.getUsers();
+    const id = users[0].id;
+    const validInput = await UserRepository.deleteUser(id);
+    const validActual = id;
+    expect(validInput).toEqual(validActual);
+
+    const newUsers = await UserRepository.getUsers();
+    const inputLength = newUsers.length;
+    const actualLength = 1;
+    expect(inputLength).toEqual(actualLength);
+
+    const invalidInput = 42;
+    const invalidActual = `Error from logger:: Error: User id doesn't exist: ${invalidInput}`;
+    try {
+      await UserRepository.deleteUser(invalidInput);
+    } catch (error) {
+      expect(error.message).toEqual(invalidActual);
+    }
+  });
+
+  test('drops database', async () => {
+    await UserRepository.dropAll();
+    const users = await UserRepository.getUsers();
+    const input = users.length;
+    const actual = 0;
+    expect(input).toEqual(actual);
   });
 });
-
-/* 
-let usersDb = require('../users-db/index');
-
-describe('usersDb', () => {
-    beforeEach(async () => {
-        await usersDb.dropAll();
-        let howie = {
-            name: 'howie',
-            age: 12,
-            grade: 3,
-            prefect: true,
-        };
-        let bill = {
-            name: 'bill',
-            age: 13,
-            grade: 3,
-            prefect: false,
-        };
-        await usersDb.addUser(howie);
-        await usersDb.addUser(bill);
-    });
-
-    it('drops database', async () => {
-        await usersDb.dropAll();
-        let users = await usersDb.listUsers();
-        let input = users.length;
-        let actual = 0;
-        expect(input).to.equal(actual);
-    });
-
-    it('lists users', async () => {
-        let input = await usersDb.listUsers();
-        let actual = 2;
-        expect(input.length).to.equal(actual);
-    });
-
-    it('find single user by id', async () => {
-        let users = await usersDb.listUsers();
-        let id = users[0].id;
-
-        let user = await usersDb.findUser('id', id);
-        let input = user.id;
-        let actual = id;
-        expect(input).to.eql(actual);
-    });
-
-    it('finds all users by property', async () => {
-        let users = await usersDb.findUsersBy('grade', 3);
-        let input = users.map((el) => el.name);
-        let actual = ['howie', 'bill'];
-        expect(input).to.eql(actual);
-    });
-
-    it('inserts a user', async () => {
-        let felix = {
-            name: 'felix',
-            grade: 2,
-            age: 6,
-        };
-        let newUser = await usersDb.addUser(felix);
-        let { id, ...input } = newUser;
-        let actual = {
-            name: 'felix',
-            grade: 2,
-            age: 6,
-            prefect: false,
-        };
-        expect(input).to.eql(actual);
-    });
-
-    it('throws error if inserts a user with invalid payload', () => {
-        let invalid = {
-            name: 'bill',
-            grade: 'INSERT POISON INTO THIS',
-        };
-        expect(() => {
-            usersDb.addUser(invalid);
-        }).to.throw('grade must be a number');
-    });
-
-    it('deletes a user', async () => {
-        let users = await usersDb.listUsers();
-        let id = users[0].id.toString();
-        let validInput = await usersDb.deleteUser(id);
-        let validActual = {
-            status: 'success',
-            id,
-        };
-        expect(validInput).to.eql(validActual);
-
-        let newUsers = await usersDb.listUsers();
-        let inputLength = newUsers.length;
-        let actualLength = 1;
-        expect(inputLength).to.equal(actualLength);
-
-        let invalidInput = await usersDb.deleteUser(42);
-        let invalidActual = {
-            status: 'fail',
-        };
-        expect(invalidInput).to.eql(invalidActual);
-    });
-});
- */

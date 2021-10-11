@@ -2,10 +2,10 @@ import storage from 'node-persist';
 import logger from '../logger/api.logger';
 
 const DB = {
-  initialize() {
+  async initialize(path) {
     try {
-      storage.init({
-        dir: '../users',
+      await storage.init({
+        dir: `../${path}`,
         stringify: JSON.stringify,
         parse: JSON.parse,
         encoding: 'utf8',
@@ -17,7 +17,6 @@ const DB = {
         // storage dir, i.e. Google Drive, make this true if you'd like to ignore these files and not throw an error
         forgiveParseErrors: false,
       });
-      logger.info('Connected to database');
       return storage;
     } catch (err) {
       logger.error('Error connecting to database  ', err);

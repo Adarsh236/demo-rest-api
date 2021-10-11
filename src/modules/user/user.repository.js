@@ -2,13 +2,13 @@ import { v1 as uuidV1 } from 'uuid';
 import DB from '../../configs/db.config';
 import logger from '../../logger/api.logger';
 
-const storage = DB.initialize();
 const USERS = 'users';
 
 const UserRepository = {
   async getUsers() {
     let data = [];
     try {
+      const storage = await DB.initialize(USERS);
       data = await storage.getItem(USERS);
 
       if (typeof data === 'undefined') {
@@ -24,7 +24,7 @@ const UserRepository = {
     let data = {};
     try {
       const users = await this.getUsers();
-      data = users.filter((user) => user.id === val);
+      data = users.filter((user) => user[prop] === val);
       if (data.length < 1) {
         throw new Error(`User id doesn't exist: ${userId}`);
       }
@@ -43,6 +43,7 @@ const UserRepository = {
 
       let users = await this.getUsers();
       users.push(user);
+      const storage = await DB.initialize(USERS);
       await storage.setItem(USERS, users);
       data = user;
     } catch (err) {
@@ -56,7 +57,10 @@ const UserRepository = {
     try {
       newUser.updatedAt = new Date();
       const oldUsers = await this.getUsers();
-      const newUsers = oldUsers.map((user) => (user.id === val ? { ...user, ...newUser } : user));
+      const newUsers = oldUsers.map((user) =>
+        user[prop] === val ? { ...user, ...newUser } : user
+      );
+      const storage = await DB.initialize(USERS);
       await storage.setItem(USERS, newUsers);
       data = await this.getUser('id', val);
     } catch (err) {
@@ -66,14 +70,25 @@ const UserRepository = {
   },
 
   async deleteUser(userId) {
-    let data = {};
     try {
       const users = await this.getUsers();
       const result = users.filter((user) => user.id != userId);
       if (users.length === result.length) {
         throw new Error(`User id doesn't exist: ${userId}`);
       }
-      data = await storage.setItem(USERS, result);
+      const storage = await DB.initialize(USERS);
+      await storage.setItem(USERS, result);
+    } catch (err) {
+      logger.error(`Error from logger:: ${err}`);
+    }
+    return userId;
+  },
+
+  async dropAll() {
+    let data = {};
+    try {
+      const storage = await DB.initialize(USERS);
+      data = await storage.removeItem(USERS);
     } catch (err) {
       logger.error(`Error from logger:: ${err}`);
     }
