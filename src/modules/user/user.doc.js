@@ -1,3 +1,5 @@
+import config from '../../configs/config';
+
 const UserDoc = () => ({
   swagger: '2.0',
   info: {
@@ -9,7 +11,7 @@ const UserDoc = () => ({
     },
   },
   schemes: ['http'],
-  host: 'localhost:4000',
+  host: `localhost:${config.dockerPort}`,
   basePath: '/api',
   paths: {
     '/users': {

@@ -6,5 +6,7 @@ import logger from './logger/api.logger';
 app.listen(config.port, () => {
   logger.info('*******API listening*********');
   logger.info(`Server listening path: http://localhost:<${config.port} || docker: 80>/api`);
-  logger.info(`Documentations path: http://localhost:<${config.port} || docker: 80>/api-docs `);
+  logger.info(
+    `Documentations path: http://localhost:<${config.port} || docker: ${config.dockerPort}}>/api-docs `
+  );
 });
