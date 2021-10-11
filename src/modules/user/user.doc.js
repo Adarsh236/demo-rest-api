@@ -46,12 +46,7 @@ const UserDoc = () => ({
             required: true,
             schema: {
               type: 'object',
-              properties: {
-                user: {
-                  type: 'object',
-                  $ref: '#/definitions/User',
-                },
-              },
+              $ref: '#/definitions/User',
             },
           },
         ],
@@ -59,10 +54,7 @@ const UserDoc = () => ({
           200: {
             description: 'successful operation',
             schema: {
-              type: 'array',
-              items: {
-                $ref: '#/definitions/UsersResponse',
-              },
+              $ref: '#/definitions/UsersResponse',
             },
           },
           400: {
@@ -92,10 +84,8 @@ const UserDoc = () => ({
           200: {
             description: 'successful operation',
             schema: {
-              type: 'array',
-              items: {
-                $ref: '#/definitions/UsersResponse',
-              },
+              type: 'object',
+              $ref: '#/definitions/UsersResponse',
             },
           },
           400: {
@@ -125,12 +115,7 @@ const UserDoc = () => ({
             required: true,
             schema: {
               type: 'object',
-              properties: {
-                user: {
-                  type: 'object',
-                  $ref: '#/definitions/User',
-                },
-              },
+              $ref: '#/definitions/User',
             },
           },
         ],
@@ -138,10 +123,8 @@ const UserDoc = () => ({
           200: {
             description: 'successful operation',
             schema: {
-              type: 'array',
-              items: {
-                $ref: '#/definitions/UsersResponse',
-              },
+              type: 'object',
+              $ref: '#/definitions/UsersResponse',
             },
           },
           400: {
@@ -169,9 +152,24 @@ const UserDoc = () => ({
           200: {
             description: 'successful operation',
             schema: {
-              type: 'array',
-              items: {
-                $ref: '#/definitions/UsersResponse',
+              type: 'object',
+              properties: {
+                success: {
+                  type: 'boolean',
+                  default: true,
+                },
+                status: {
+                  type: 'number',
+                  default: 200,
+                },
+                data: {
+                  type: 'object',
+                  properties: {
+                    id: {
+                      type: 'string',
+                    },
+                  },
+                },
               },
             },
           },
@@ -191,9 +189,11 @@ const UserDoc = () => ({
       properties: {
         success: {
           type: 'boolean',
+          default: true,
         },
         status: {
           type: 'number',
+          default: 200,
         },
         data: {
           type: 'object',
@@ -228,9 +228,11 @@ const UserDoc = () => ({
       properties: {
         success: {
           type: 'boolean',
+          default: true,
         },
         status: {
           type: 'number',
+          default: 200,
         },
         data: {
           type: 'array',
@@ -268,15 +270,19 @@ const UserDoc = () => ({
       properties: {
         name: {
           type: 'string',
+          default: 'bill',
         },
         dob: {
           type: 'string',
+          default: '01/02/1996',
         },
         address: {
           type: 'string',
+          default: 'new york',
         },
         description: {
           type: 'string',
+          default: 'for test',
         },
       },
     },
@@ -285,9 +291,11 @@ const UserDoc = () => ({
       properties: {
         success: {
           type: 'boolean',
+          default: false,
         },
         status: {
           type: 'number',
+          default: 404,
         },
         data: {
           type: 'object',

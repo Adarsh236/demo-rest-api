@@ -26,7 +26,6 @@ const UserService = {
 
   async getUserBy(prop, val) {
     try {
-      if (prop === 'id') prop = '_id';
       const data = await UserRepository.getUser(prop, val);
       return CustomResponse.success(serialize(data, 'obj'));
     } catch (err) {
@@ -51,7 +50,6 @@ const UserService = {
 
   async updateUserBy(prop, val, user) {
     try {
-      if (prop === 'id') prop = '_id';
       const db = validateUser(user);
       const newUser = this.createNewUserObj(db);
       const data = await UserRepository.updateUser(prop, val, newUser);
