@@ -28,6 +28,8 @@ $ npm run test-watch
 
 ### For Docker
 
+repo: adarshdocker236/demo-rest-api-docker
+
 ```sh
 $ docker-compose build
 $ docker-compose up
